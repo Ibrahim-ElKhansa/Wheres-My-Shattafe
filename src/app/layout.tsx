@@ -6,6 +6,7 @@ import NavigationMenu from "@/components/navigation-menu";
 import { AppContextProvider } from "@/contexts/app-context";
 import Image from "next/image";
 import ShattafeMarker from "../../public/shattafe-marker.png";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,15 +29,16 @@ export default function RootLayout({
         <AppContextProvider>
           <NavigationMenu />
           <div className="main">
-            <header className="home-page__header">
-              <div className="home-page__logo">
+            <header className="main__header">
+              <div className="main__logo">
                 <Image src={ShattafeMarker} alt="Shattafe Marker" fill placeholder="blur" />
               </div>
-              <h1 className="home-page__title">Where&apos;s My Shattafe?</h1>
+              <h1 className="main__title">Where&apos;s My Shattafe?</h1>
             </header>
             {children}
           </div>
         </AppContextProvider>
+        <Analytics />
       </body>
     </html>
   );
