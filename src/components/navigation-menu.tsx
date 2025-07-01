@@ -10,11 +10,11 @@ export default function NavigationMenu() {
         <Link href="/" className="navigation-menu__item">
           <HomeIcon /> Home
         </Link>
-        <Link href="/about" className="navigation-menu__item">
-          <InfoIcon /> About
-        </Link>
         <Link href="/contribute" className="navigation-menu__item">
           <AddCircleIcon/> Contribute
+        </Link>
+        <Link href="/about" className="navigation-menu__item">
+          <InfoIcon /> About
         </Link>
       </div>
     </nav>

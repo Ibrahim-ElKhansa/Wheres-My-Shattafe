@@ -29,6 +29,7 @@ body {
     align-items: center;
     height: 100px;
     width: 100%;
+    padding: 10px;
   }
 
   &__logo {
@@ -41,5 +42,20 @@ body {
     font-size: 38px;
     color: #1c406d;
     font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    &__header {
+      background: #1c406d;
+      color: #fff;
+      height: 80px;
+      padding: 10px 5px;
+      
+    }
+
+    &__title {
+      color: #fff;
+      font-size: 24px;
+    }
   }
 }

@@ -2,14 +2,25 @@
 
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import shattafeMarker from "../../public/shattafe-marker.png";
+import userLocationMarker from "../../public/user-location-marker.png";
+import { useAppContext } from "@/contexts/app-context";
+import Coordinates from "@/models/coordinates";
 
 // your custom icon
-const customIcon = L.icon({
+const customShattafeIcon = L.icon({
   iconUrl: shattafeMarker.src,
   iconSize: [64, 64],
   iconAnchor: [32, 60],
+  popupAnchor: [0, -1],
+});
+
+// user location icon
+const userLocationIcon = L.icon({
+  iconUrl: userLocationMarker.src,
+  iconSize: [48, 48],
+  iconAnchor: [24, 46],
   popupAnchor: [0, -1],
 });
 
@@ -20,46 +31,24 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "/leaflet/images/marker-shadow.png",
 });
 
-// helper to recenter the map when props.center changes
-function Recenter({ center }: { center: [number, number] }) {
+function Recenter({ center }: { center: Coordinates }) {
   const map = useMap();
+
   useEffect(() => {
-    map.setView(center);
+    map.setView(center.convertToNumberArray());
   }, [center, map]);
+
   return null;
 }
 
-// Type for your toilet data
-interface Toilet {
-  id: number;
-  name: string;
-  lat: number;
-  lng: number;
-}
-
 export default function ShattafeMap() {
-  // default center: Beirut
-  const defaultCenter: [number, number] = [33.89185540554506, 35.48990515917835];
+  const { toilets, loading, currentLocation, mapCenter, setMapCenter } = useAppContext();
 
-  const [mapCenter, setMapCenter] = useState<[number, number]>(defaultCenter);
-  const [toilets, setToilets] = useState<Toilet[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // load toilet data
   useEffect(() => {
-    fetch("/data/toilets.json")
-      .then((res) => res.json())
-      .then((data: Toilet[]) => {
-        setToilets(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to load toilets.json", err);
-        setLoading(false);
-      });
-
-    setMapCenter(defaultCenter);
-  }, []);
+    if (!currentLocation.isEmpty()) {
+      setMapCenter(currentLocation);
+    }
+  }, [currentLocation]);
 
   if (loading) {
     return <p className="p-4">Loading map data…</p>;
@@ -75,10 +64,15 @@ export default function ShattafeMap() {
       />
 
       {toilets.map((t) => (
-        <Marker key={t.id} position={[t.lat, t.lng]} icon={customIcon}>
+        <Marker key={t.id} position={[t.lat, t.lng]} icon={customShattafeIcon}>
           <Popup>{t.name}</Popup>
         </Marker>
       ))}
+      {!currentLocation.isEmpty() && (
+        <Marker position={currentLocation} icon={userLocationIcon}>
+          <Popup>Your Current Location</Popup>
+        </Marker>
+      )}
     </MapContainer>
   );
 }

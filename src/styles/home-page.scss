@@ -4,10 +4,40 @@
   justify-content: space-between;
   padding: 30px;
   flex: 1 1 auto;
+  z-index: 1;
 
   &__map-container {
+    position: relative;
     border: 3px solid #ccc;
     flex: 1 1 auto;
-    margin-top: 50px;
+  }
+
+  &__map-buttons {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 400;
+
+    button {
+      padding: 5px;
+      background-color: #0070f3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #005bb5;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 0;
+    padding-bottom: 90px;
   }
 }

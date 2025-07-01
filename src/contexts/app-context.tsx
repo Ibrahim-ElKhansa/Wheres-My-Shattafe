@@ -1,15 +1,29 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode, FC, useEffect } from 'react';
+import Coordinates from "@/models/coordinates";
+import Toilet, { ToiletInterface } from "@/models/toilet";
+import React, { createContext, useContext, useState, ReactNode, FC, useEffect } from "react";
 
 export interface AppContextType {
-  currentLocation: [number, number];
-  setCurrentLocation: React.Dispatch<React.SetStateAction<[number, number]>>;
+  toilets: Toilet[];
+  setToilets: React.Dispatch<React.SetStateAction<Toilet[]>>;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  currentLocation: Coordinates;
+  setCurrentLocation: React.Dispatch<React.SetStateAction<Coordinates>>;
+  mapCenter: Coordinates;
+  setMapCenter: React.Dispatch<React.SetStateAction<Coordinates>>;
 }
 
 const defaultContext: AppContextType = {
-  currentLocation: [0, 0],
+  toilets: [],
+  setToilets: () => {},
+  loading: true,
+  setLoading: () => {},
+  currentLocation: Coordinates.getEmpty(),
   setCurrentLocation: () => {},
+  mapCenter: Coordinates.getBeirutCenter(),
+  setMapCenter: () => {},
 };
 
 const AppContext = createContext<AppContextType>(defaultContext);
@@ -19,31 +33,45 @@ interface AppProviderProps {
 }
 
 export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
-  const [currentLocation, setCurrentLocation] = useState<[number, number]>([0, 0]);
-  
-  useEffect(() => {
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            setCurrentLocation([pos.coords.latitude, pos.coords.longitude]);
-          },
-          (err) => {
-            console.warn("Geolocation error:", err);
-          },
-          {
-            enableHighAccuracy: true,
-            timeout: 10_000,
-            maximumAge: 0,
-          }
-        );
-      }
-    }, []);
+  const defaultCenter = Coordinates.getBeirutCenter();
 
-  return (
-    <AppContext.Provider value={{ currentLocation, setCurrentLocation }}>
-      {children}
-    </AppContext.Provider>
-  );
+  const [toilets, setToilets] = useState<Toilet[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentLocation, setCurrentLocation] = useState<Coordinates>(Coordinates.getEmpty());
+  const [mapCenter, setMapCenter] = useState<Coordinates>(defaultCenter);
+
+  useEffect(() => {
+    fetch("/data/toilets.json")
+      .then((res) => res.json())
+      .then((data: ToiletInterface[]) => {
+        setToilets(data.map((toilet) => Toilet.convertFromInterface(toilet)));
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load toilets.json", err);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setCurrentLocation(new Coordinates(pos.coords.latitude, pos.coords.longitude));
+        },
+        (err) => {
+          console.warn("Geolocation error:", err);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10_000,
+          maximumAge: 0,
+        }
+      );
+    }
+  }, []);
+
+  return <AppContext.Provider value={{ toilets, setToilets, loading, setLoading, currentLocation, setCurrentLocation, mapCenter, setMapCenter }}>{children}</AppContext.Provider>;
 };
 
 export const useAppContext = (): AppContextType => {
