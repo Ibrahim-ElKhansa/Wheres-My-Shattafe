@@ -11,12 +11,12 @@ body {
   display: flex;
   height: 100svh;
   width: 100svw;
-  font-family: system-ui, sans-serif;
   margin: 0;
   padding: 0;
   background: #f5f5f5;
   overflow: hidden;
   box-sizing: border-box;
+  font-family: var(--font-oswald), system-ui, sans-serif;
 }
 
 .main {

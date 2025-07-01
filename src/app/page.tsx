@@ -18,14 +18,6 @@ export default function Home() {
         <div className="home-page__map-buttons">
           <button
             onClick={() => {
-              console.log("Recenter button clicked");
-              setMapCenter(currentLocation.duplicate());
-            }}
-          >
-            <CenterFocusStrongIcon />
-          </button>
-          <button
-            onClick={() => {
               console.log("Find closest toilet button clicked");
               const closest = findClosestToilet(currentLocation, toilets);
               if (closest) {
@@ -33,7 +25,15 @@ export default function Home() {
               }
             }}
           >
-            <ScreenSearchDesktopIcon />
+            <ScreenSearchDesktopIcon /> Closest Bidet
+          </button>
+          <button
+            onClick={() => {
+              console.log("Recenter button clicked");
+              setMapCenter(currentLocation.duplicate());
+            }}
+          >
+            <CenterFocusStrongIcon /> Recenter
           </button>
         </div>
       </div>
