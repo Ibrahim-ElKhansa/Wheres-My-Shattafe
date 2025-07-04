@@ -1,9 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-
+import PersonIcon from "@mui/icons-material/Person";
+import AuthModal from "./auth-modal";
+import {useAppContext} from "@/contexts/app-context";
+import { useState } from "react";
 export default function NavigationMenu() {
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const { session } = useAppContext();
+
   return (
     <nav className="navigation-menu">
       <div className="navigation-menu__content">
@@ -11,11 +19,15 @@ export default function NavigationMenu() {
           <HomeIcon /> Home
         </Link>
         <Link href="/contribute" className="navigation-menu__item">
-          <AddCircleIcon/> Contribute
+          <AddCircleIcon /> Contribute
         </Link>
         <Link href="/about" className="navigation-menu__item">
           <InfoIcon /> About
         </Link>
+        <button className="navigation-menu__item" onClick={() => setAuthModalOpen(true)}>
+          <PersonIcon />{session ? "Profile" : "Sign In"}
+        </button>
+        <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
       </div>
     </nav>
   );

@@ -20,6 +20,9 @@
     text-decoration: none;
     font-size: 22px;
     transition: background-color 0.3s;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 
     &:hover {
       background-color: rgb(14, 58, 97)
