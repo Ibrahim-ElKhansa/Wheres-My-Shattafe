@@ -14,7 +14,14 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="auth-modal auth-modal__overlay">
+    <div
+      className="auth-modal auth-modal__overlay"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="auth-modal__content">
         <button className="auth-modal__close-btn" onClick={onClose} aria-label="Close auth modal">
           <CloseIcon />
