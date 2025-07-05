@@ -1,11 +1,24 @@
 "use client";
 
 import Coordinates from "@/models/coordinates";
-import Toilet, { ToiletDTO } from "@/models/toilet";
+import Toilet, { Gender, Status, ToiletDTO } from "@/models/toilet";
 import React, { createContext, useContext, useState, ReactNode, FC, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Session, SupabaseClient } from "@supabase/supabase-js";
 
+type ToiletRow = {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  gender: Gender
+  description: string | null
+  upvote_count: number
+  downvote_count: number
+  status: Status
+  submitted_at: string      // ISO timestamp
+  submitted_by_id: string
+}
 export interface AppContextType {
   supabase: SupabaseClient;
   session: Session | null;
@@ -70,17 +83,51 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
   }, [supabase]);
 
   useEffect(() => {
-    fetch("/data/toilets.json")
-      .then((res) => res.json())
-      .then((data: ToiletDTO[]) => {
-        setToilets(data.map((toilet) => Toilet.fromDTO(toilet)));
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to load toilets.json", err);
-        setLoading(false);
-      });
-  }, []);
+    const loadToilets = async () => {
+      setLoading(true);
+
+      // pull all toilet rows
+      const { data: rows, error } = await supabase.from("toilets").select(`
+          id,
+          name,
+          lat,
+          lng,
+          gender,
+          description,
+          upvote_count,
+          downvote_count,
+          status,
+          submitted_at,
+          submitted_by_id
+        `);
+
+      if (error) {
+        console.error("Error loading toilets:", error);
+        setToilets([]);
+      } else if (rows) {
+        // map snake_case → your ToiletDTO then into Toilet model
+        const dtos: ToiletDTO[] = rows.map((r: ToiletRow) => ({
+          id: r.id,
+          name: r.name,
+          lat: r.lat,
+          lng: r.lng,
+          gender: r.gender,
+          description: r.description ?? undefined,
+          upvoteCount: r.upvote_count,
+          downvoteCount: r.downvote_count,
+          status: r.status,
+          submittedAt: r.submitted_at,
+          submittedById: r.submitted_by_id,
+        }));
+
+        setToilets(dtos.map((dto) => Toilet.fromDTO(dto)));
+      }
+
+      setLoading(false);
+    };
+
+    loadToilets();
+  }, [supabase]);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -100,7 +147,11 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
     }
   }, []);
 
-  return <AppContext.Provider value={{ supabase, session, setSession, toilets, setToilets, loading, setLoading, currentLocation, setCurrentLocation, mapCenter, setMapCenter }}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={{ supabase, session, setSession, toilets, setToilets, loading, setLoading, currentLocation, setCurrentLocation, mapCenter, setMapCenter }}>
+      {children}
+    </AppContext.Provider>
+  );
 };
 
 export const useAppContext = (): AppContextType => {

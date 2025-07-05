@@ -1,9 +1,0 @@
-[
-  { "id": 1, "name": "Post Hall Stairs Bathroom", "lat": 33.89939985801464, "lng": 35.48401177857446 },
-  { "id": 2, "name": "Jafet Underground Bathroom", "lat": 33.90032262517665, "lng": 35.482502195683004 },
-  { "id": 3, "name": "OSB Third Floor Bathroom", "lat": 33.902077919381625, "lng": 35.482282485354254 },
-  { "id": 4, "name": "ECON Dep. Second Floor Bathroom", "lat": 33.89968906212314,  "lng": 35.48158610706898 },
-  { "id": 5, "name": "Sage 1st Floor Bathroom", "lat": 33.89273715763271, "lng": 35.47758868710856 },
-  { "id": 6, "name": "Aksob 1st Floor Bathroom", "lat": 33.89278358374674, "lng": 35.47648534260823 },
-  { "id": 7, "name": "Nicole Building 1st Floor Bathroom", "lat": 33.89260630467656, "lng": 35.47854748791463 }
-]
