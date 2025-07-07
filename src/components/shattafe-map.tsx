@@ -1,12 +1,13 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import shattafeMarker from "../../public/shattafe-marker.png";
 import userLocationMarker from "../../public/user-location-marker.png";
 import { useAppContext } from "@/contexts/app-context";
 import Coordinates from "@/models/coordinates";
+export type MapMode = "general" | "location" | "information";
 
 // your custom icon
 const customShattafeIcon = L.icon({
@@ -31,48 +32,83 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "/leaflet/images/marker-shadow.png",
 });
 
-function Recenter({ center }: { center: Coordinates }) {
-  const map = useMap();
-
-  useEffect(() => {
-    map.setView(center.convertToNumberArray());
-  }, [center, map]);
-
-  return null;
+interface ShattafeMapProps {
+  mapMode: MapMode;
+  onAddLocation: (coords: Coordinates) => void;
 }
 
-export default function ShattafeMap() {
+export default function ShattafeMap({ mapMode, onAddLocation }: ShattafeMapProps) {
   const { toilets, loading, currentLocation, mapCenter, setMapCenter } = useAppContext();
+  const mapRef = useRef<L.Map | null>(null);
 
+  // initialize center to current location
   useEffect(() => {
     if (!currentLocation.isEmpty()) {
       setMapCenter(currentLocation);
     }
   }, [currentLocation]);
 
+  // report center when entering information mode
+  useEffect(() => {
+    if (mapMode === "information" && mapRef.current) {
+      const c = mapRef.current.getCenter();
+      onAddLocation(new Coordinates(c.lat, c.lng));
+    }
+  }, [mapMode]);
+
   if (loading) {
-    return <p className="p-4">Loading map data…</p>;
+    return <p>Loading map data…</p>;
   }
 
   return (
-    <MapContainer center={mapCenter} zoom={14} style={{ height: "100%", width: "100%" }}>
-      <Recenter center={mapCenter} />
+    <div style={{ position: "relative", height: "100%", width: "100%" }}>
+      <MapContainer
+        ref={(inst) => {
+          mapRef.current = inst as unknown as L.Map;
+        }}
+        center={mapCenter}
+        zoom={14}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          attribution='&copy; <a href="https://osm.org">OpenStreetMap</a> &copy; <a href="https://carto.com/">CartoDB</a>'
+        />
 
-      <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        attribution='&copy; <a href="https://osm.org">OpenStreetMap</a> &copy; <a href="https://carto.com/">CartoDB</a>'
-      />
+        {/* General markers */}
+        {mapMode === "general" &&
+          toilets.map((t) => (
+            <Marker key={t.id} position={[t.lat, t.lng]} icon={customShattafeIcon}>
+              <Popup>{t.name}</Popup>
+            </Marker>
+          ))}
 
-      {toilets.map((t) => (
-        <Marker key={t.id} position={[t.lat, t.lng]} icon={customShattafeIcon}>
-          <Popup>{t.name}</Popup>
-        </Marker>
-      ))}
-      {!currentLocation.isEmpty() && (
-        <Marker position={currentLocation} icon={userLocationIcon}>
-          <Popup>Your Current Location</Popup>
-        </Marker>
+        {/* User location */}
+        {mapMode === "general" && !currentLocation.isEmpty() && (
+          <Marker position={currentLocation} icon={userLocationIcon}>
+            <Popup>Your Current Location</Popup>
+          </Marker>
+        )}
+      </MapContainer>
+
+      {/* Center crosshair for location mode */}
+      {mapMode === "location" && (
+        <img
+          src={shattafeMarker.src}
+          alt="Center Crosshair"
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -94%)",
+            pointerEvents: "none",
+            width: 64,
+            height: 64,
+            opacity: 0.8,
+            zIndex: 1000,
+          }}
+        />
       )}
-    </MapContainer>
+    </div>
   );
 }
