@@ -1,6 +1,5 @@
 .navigation-menu {
-  // background-color: #3e8ada;
-  background-color: #1c406d;
+  background-color: $primary;
   flex: 0 0;
   min-width: 250px;
   height: 100%;
@@ -16,7 +15,7 @@
     align-items: center;
     gap: 10px;
     padding: 15px 20px;
-    color: white;
+    color: $white;
     text-decoration: none;
     font-size: 22px;
     transition: background-color 0.3s;
@@ -25,7 +24,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: rgb(14, 58, 97)
+      background-color: $secondary;
     }
   }
 

@@ -11,16 +11,19 @@ import Coordinates from "@/models/coordinates";
 import { MapMode } from "@/components/shattafe-map";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
+import Bidetmodal from "@/components/bidet-modal";
 
 const ShattafeMap = dynamic(() => import("@/components/shattafe-map"), { ssr: false });
 
 export default function Home() {
-  const { toilets, currentLocation, setMapCenter } = useAppContext();
+  const { toilets, currentLocation, setMapCenter, session, setAuthModalOpen } = useAppContext();
   const [mapMode, setMapMode] = useState<MapMode>("general" as MapMode);
+  const [centerCoordinates, setCenterCoordinates] = useState<Coordinates>(currentLocation.duplicate());
 
   const handleAddLocation = (coords: Coordinates) => {
     console.log("🏷️ New submit coords:", coords);
     // send coords to your form or API…
+    setCenterCoordinates(coords);
     setMapMode("information");
   }; //todo add modal when mapmode === information
 
@@ -49,8 +52,10 @@ export default function Home() {
                 <CenterFocusStrongIcon /> Recenter
               </button>
               <button
+                className="home-page__add-toilet-button"
                 onClick={() => {
-                  setMapMode("location" as MapMode);
+                  if (session) setMapMode("location" as MapMode);
+                  else setAuthModalOpen(true);
                 }}
               >
                 <AddIcon /> Submit Toilet
@@ -85,6 +90,7 @@ export default function Home() {
             </button>
           )}
         </div>
+        <Bidetmodal isOpen={mapMode === "information"} coordinates={centerCoordinates} onClose={() => setMapMode("location" as MapMode)} />
       </div>
     </div>
   );

@@ -11,12 +11,13 @@ type ToiletRow = {
   name: string
   lat: number
   lng: number
+  location_type: string
   gender: Gender
   description: string | null
   upvote_count: number
   downvote_count: number
   status: Status
-  submitted_at: string      // ISO timestamp
+  submitted_at: string
   submitted_by_id: string
 }
 export interface AppContextType {
@@ -31,6 +32,8 @@ export interface AppContextType {
   setCurrentLocation: React.Dispatch<React.SetStateAction<Coordinates>>;
   mapCenter: Coordinates;
   setMapCenter: React.Dispatch<React.SetStateAction<Coordinates>>;
+  authModalOpen: boolean;
+  setAuthModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const defaultContext: AppContextType = {
@@ -45,6 +48,8 @@ const defaultContext: AppContextType = {
   setCurrentLocation: () => {},
   mapCenter: Coordinates.getBeirutCenter(),
   setMapCenter: () => {},
+  authModalOpen: false,
+  setAuthModalOpen: () => {},
 };
 
 const AppContext = createContext<AppContextType>(defaultContext);
@@ -63,6 +68,7 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [currentLocation, setCurrentLocation] = useState<Coordinates>(Coordinates.getEmpty());
   const [mapCenter, setMapCenter] = useState<Coordinates>(defaultCenter);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   useEffect(() => {
     // fetch existing session
@@ -93,6 +99,7 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
           lat,
           lng,
           gender,
+          location_type,
           description,
           upvote_count,
           downvote_count,
@@ -111,6 +118,7 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
           name: r.name,
           lat: r.lat,
           lng: r.lng,
+          locationType: r.location_type,
           gender: r.gender,
           description: r.description ?? undefined,
           upvoteCount: r.upvote_count,
@@ -148,7 +156,7 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ supabase, session, setSession, toilets, setToilets, loading, setLoading, currentLocation, setCurrentLocation, mapCenter, setMapCenter }}>
+    <AppContext.Provider value={{ supabase, session, setSession, toilets, setToilets, loading, setLoading, currentLocation, setCurrentLocation, mapCenter, setMapCenter, authModalOpen, setAuthModalOpen }}>
       {children}
     </AppContext.Provider>
   );

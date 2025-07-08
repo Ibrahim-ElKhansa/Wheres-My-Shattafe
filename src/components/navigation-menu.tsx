@@ -6,11 +6,9 @@ import InfoIcon from "@mui/icons-material/Info";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import PersonIcon from "@mui/icons-material/Person";
 import AuthModal from "./auth-modal";
-import {useAppContext} from "@/contexts/app-context";
-import { useState } from "react";
+import { useAppContext } from "@/contexts/app-context";
 export default function NavigationMenu() {
-  const [authModalOpen, setAuthModalOpen] = useState(false);
-  const { session } = useAppContext();
+  const { session, authModalOpen, setAuthModalOpen } = useAppContext();
 
   return (
     <nav className="navigation-menu">
@@ -25,7 +23,8 @@ export default function NavigationMenu() {
           <InfoIcon /> About
         </Link>
         <button className="navigation-menu__item" onClick={() => setAuthModalOpen(true)}>
-          <PersonIcon />{session ? "Profile" : "Sign In"}
+          <PersonIcon />
+          {session ? "Profile" : "Sign In"}
         </button>
         <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
       </div>

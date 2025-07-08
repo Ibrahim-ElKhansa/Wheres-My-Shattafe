@@ -56,6 +56,12 @@ export default function ShattafeMap({ mapMode, onAddLocation }: ShattafeMapProps
     }
   }, [mapMode]);
 
+  useEffect(() => {
+  if (mapRef.current) {
+    mapRef.current.setView([mapCenter.lat, mapCenter.lng], mapRef.current.getZoom(), { animate: true });
+  }
+}, [mapCenter]);
+
   if (loading) {
     return <p>Loading map data…</p>;
   }

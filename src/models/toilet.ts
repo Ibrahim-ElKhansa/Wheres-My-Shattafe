@@ -9,6 +9,7 @@ export interface ToiletDTO {
   name: string;
   lat: number;
   lng: number;
+  locationType: string;
   gender: Gender;
   description?: string;
   upvoteCount?: number;
@@ -26,6 +27,7 @@ export interface ToiletModel {
   name: string;
   lat: number;
   lng: number;
+  locationType: string;
   gender: Gender;
   description?: string;
   upvoteCount?: number;
@@ -42,6 +44,7 @@ export default class Toilet implements ToiletModel {
   name: string;
   lat: number;
   lng: number;
+  locationType: string;
   gender: Gender;
   description?: string;
   upvoteCount?: number;
@@ -57,6 +60,7 @@ export default class Toilet implements ToiletModel {
     this.name = dto.name;
     this.lat = dto.lat;
     this.lng = dto.lng;
+    this.locationType = dto.locationType;
     this.gender = dto.gender;
     this.description = dto.description;
     this.upvoteCount = dto.upvoteCount;

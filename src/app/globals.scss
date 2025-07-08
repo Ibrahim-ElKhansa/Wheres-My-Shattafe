@@ -1,11 +1,18 @@
-$brand-color: #0070f3;
+$primary: #0F4C75;
+$secondary: #3282B8;
+$tertiary: #BBE1FA;
+
+$dark: #393E46;
+$black: #1B262C;
+$white: #F7FBFC;
 
 
-@use '@/styles/home-page.scss';
-@use '@/styles/navigation-menu.scss';
-@use '@/styles/about-page.scss';
-@use '@/styles/contribute-page.scss';
-@use '@/styles/auth-modal.scss';
+@import '@/styles/home-page.scss';
+@import '@/styles/navigation-menu.scss';
+@import '@/styles/about-page.scss';
+@import '@/styles/contribute-page.scss';
+@import '@/styles/auth-modal.scss';
+@import '@/styles/bidet-modal.scss';
 
 html,
 body {
@@ -14,7 +21,7 @@ body {
   width: 100svw;
   margin: 0;
   padding: 0;
-  background: #f5f5f5;
+  background: $white;
   overflow: hidden;
   box-sizing: border-box;
   font-family: var(--font-oswald), system-ui, sans-serif;
@@ -43,7 +50,7 @@ body {
 
   &__title {
     font-size: 38px;
-    color: #1c406d;
+    color: $primary;
     font-weight: 600;
   }
 

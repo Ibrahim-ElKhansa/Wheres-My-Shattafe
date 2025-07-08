@@ -23,6 +23,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
       aria-modal="true"
     >
       <div className="auth-modal__content">
+        <div className="auth-modal__title">{session ? "Profile" : "Sign In"}</div>
         <button className="auth-modal__close-btn" onClick={onClose} aria-label="Close auth modal">
           <CloseIcon />
         </button>
