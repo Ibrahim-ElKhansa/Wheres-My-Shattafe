@@ -11,7 +11,7 @@ import Coordinates from "@/models/coordinates";
 import { MapMode } from "@/components/shattafe-map";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import Bidetmodal from "@/components/bidet-modal";
+import BidetModal from "@/components/bidet-modal";
 
 const ShattafeMap = dynamic(() => import("@/components/shattafe-map"), { ssr: false });
 
@@ -25,7 +25,7 @@ export default function Home() {
     // send coords to your form or API…
     setCenterCoordinates(coords);
     setMapMode("information");
-  }; //todo add modal when mapmode === information
+  };
 
   return (
     <div className="home-page">
@@ -90,7 +90,7 @@ export default function Home() {
             </button>
           )}
         </div>
-        <Bidetmodal isOpen={mapMode === "information"} coordinates={centerCoordinates} onClose={() => setMapMode("location" as MapMode)} />
+        <BidetModal isOpen={mapMode === "information"} coordinates={centerCoordinates} onClose={() => setMapMode("general" as MapMode)} />
       </div>
     </div>
   );

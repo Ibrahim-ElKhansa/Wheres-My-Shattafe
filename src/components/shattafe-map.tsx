@@ -4,20 +4,26 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import { useEffect, useRef } from "react";
 import shattafeMarker from "../../public/shattafe-marker.png";
+import pendingShattafeMarker from "../../public/pending-shattafe-marker.png";
 import userLocationMarker from "../../public/user-location-marker.png";
 import { useAppContext } from "@/contexts/app-context";
 import Coordinates from "@/models/coordinates";
 export type MapMode = "general" | "location" | "information";
 
-// your custom icon
-const customShattafeIcon = L.icon({
+const shattafeIcon = L.icon({
   iconUrl: shattafeMarker.src,
   iconSize: [64, 64],
   iconAnchor: [32, 60],
   popupAnchor: [0, -1],
 });
 
-// user location icon
+const pendingShattafeIcon = L.icon({
+  iconUrl: pendingShattafeMarker.src,
+  iconSize: [64, 64],
+  iconAnchor: [32, 60],
+  popupAnchor: [0, -1],
+});
+
 const userLocationIcon = L.icon({
   iconUrl: userLocationMarker.src,
   iconSize: [48, 48],
@@ -25,7 +31,6 @@ const userLocationIcon = L.icon({
   popupAnchor: [0, -1],
 });
 
-// fix default marker icons
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: "/leaflet/images/marker-icon-2x.png",
   iconUrl: "/leaflet/images/marker-icon.png",
@@ -84,7 +89,7 @@ export default function ShattafeMap({ mapMode, onAddLocation }: ShattafeMapProps
         {/* General markers */}
         {mapMode === "general" &&
           toilets.map((t) => (
-            <Marker key={t.id} position={[t.lat, t.lng]} icon={customShattafeIcon}>
+            <Marker key={t.id} position={[t.lat, t.lng]} icon={(t.status && t.status === "approved") ? shattafeIcon : pendingShattafeIcon}>
               <Popup>{t.name}</Popup>
             </Marker>
           ))}

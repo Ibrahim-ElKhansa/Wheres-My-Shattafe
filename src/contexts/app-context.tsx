@@ -106,7 +106,7 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
           status,
           submitted_at,
           submitted_by_id
-        `);
+        `); //todo any user can still see the toilets table which is wrong
 
       if (error) {
         console.error("Error loading toilets:", error);

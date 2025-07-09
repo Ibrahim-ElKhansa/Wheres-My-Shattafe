@@ -7,13 +7,13 @@ import { addToilet } from "@/app/actions/toilets";
 import { useAppContext } from "@/contexts/app-context";
 import { Gender } from "@/models/toilet";
 
-interface BidetmodalProps {//code break to avoid redeployment
+interface BidetModalProps {
   isOpen: boolean;
   coordinates: Coordinates;
   onClose: () => void;
+}
 
-
-export default function Bidetmodal({ isOpen, coordinates, onClose }: BidetmodalProps) {
+export default function BidetModal({ isOpen, coordinates, onClose }: BidetModalProps) {
   const { session } = useAppContext();
   const [locationName, setLocationName] = useState("");
   const [locationType, setLocationType] = useState("restaurant");
