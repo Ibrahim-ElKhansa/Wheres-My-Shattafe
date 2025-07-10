@@ -6,7 +6,7 @@ $dark: #393E46;
 $black: #1B262C;
 $white: #F7FBFC;
 
-.about-page {
+.support-page {
   overflow: auto;
   padding: 32px;
   margin: 0 auto;
@@ -24,7 +24,7 @@ $white: #F7FBFC;
   &::-webkit-scrollbar-thumb {
     background: $secondary;
     border-radius: 10px;
-    transition: background 0.3s ease;
+    transition: 0.3s ease;
 
     &:hover {
       background: $primary;
@@ -35,7 +35,6 @@ $white: #F7FBFC;
     background: $primary;
   }
 
-  // Firefox scrollbar styling
   scrollbar-width: thin;
   scrollbar-color: $secondary $tertiary;
 
@@ -50,8 +49,8 @@ $white: #F7FBFC;
   &__section {
     margin-bottom: 40px;
 
-    &:last-child {
-      margin-bottom: 0;
+    &:last-of-type {
+      margin-bottom: 32px;
     }
   }
 
@@ -68,21 +67,51 @@ $white: #F7FBFC;
     line-height: 1.6;
     margin-bottom: 16px;
     color: $dark;
-    font-size: 16px;
   }
 
-  &__features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    margin: 20px 0;
+  &__contact-list,
+  &__funding-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
   }
 
-  &__feature {
+  &__contact-item,
+  &__funding-item {
+    margin-bottom: 12px;
+    padding: 8px;
     background-color: $tertiary;
-    border: 2px solid $secondary;
+    border-radius: 6px;
+    border-left: 4px solid $secondary;
+  }
+
+  &__funding-item {
+    border-left-color: $primary;
+  }
+
+  &__link {
+    color: $secondary;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+
+  &__donation-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 32px;
+    margin: 32px 0;
+  }
+
+  &__donation-method {
+    background-color: $white;
+    border: 2px solid $tertiary;
     border-radius: 12px;
-    padding: 20px;
+    padding: 24px;
+    text-align: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 
     &:hover {
@@ -91,53 +120,45 @@ $white: #F7FBFC;
     }
   }
 
-  &__feature-title {
-    font-size: 18px;
+  &__donation-title {
+    font-size: 20px;
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     color: $primary;
   }
 
-  &__feature-text {
-    line-height: 1.5;
-    color: $dark;
-    margin: 0;
-    font-size: 14px;
-  }
-
-  &__tech-list {
-    list-style: none;
-    padding: 0;
-    margin: 16px 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 12px;
-  }
-
-  &__tech-item {
-    background-color: $white;
-    border: 2px solid $tertiary;
+  &__qr-placeholder {
+    border: 2px solid $secondary;
     border-radius: 8px;
-    padding: 12px;
-    border-left: 4px solid $secondary;
-    font-size: 14px;
-    line-height: 1.4;
-    color: $dark;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 200px;
+    margin: 0 auto;
+    box-shadow: 0 4px 16px rgba(50, 130, 184, 0.15);
   }
 
-  &__link {
-    color: $secondary;
-    text-decoration: underline;
-    font-weight: 500;
-    transition: color 0.2s ease;
+  &__qr-image {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    height: auto;
+  }
 
-    &:hover {
-      color: $primary;
-    }
+  &__footer {
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.6;
+    color: $primary;
+    background-color: $tertiary;
+    padding: 24px;
+    border-radius: 8px;
+    border: 2px solid $secondary;
   }
 
   @media (max-width: 768px) {
-    padding: 20px;
+    padding: 16px;
     padding-bottom: 100px;
 
     &__title {
@@ -149,44 +170,18 @@ $white: #F7FBFC;
       font-size: 20px;
     }
 
-    &__features {
+    &__donation-methods {
       grid-template-columns: 1fr;
       gap: 16px;
     }
 
-    &__feature {
+    &__donation-method {
       padding: 16px;
     }
 
-    &__tech-list {
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
-
-    &__tech-item {
-      padding: 10px;
-    }
-
-    &__text,
-    &__feature-text {
-      font-size: 14px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    padding: 16px;
-
-    &__title {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-
-    &__section-title {
-      font-size: 18px;
-    }
-
-    &__section {
-      margin-bottom: 32px;
+    &__qr-placeholder {
+      padding: 16px;
+      max-width: 180px;
     }
   }
 }

@@ -7,19 +7,19 @@ import { createClient } from "@/utils/supabase/client";
 import { Session, SupabaseClient } from "@supabase/supabase-js";
 
 type ToiletRow = {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  location_type: string
-  gender: Gender
-  description: string | null
-  upvote_count: number
-  downvote_count: number
-  status: Status
-  submitted_at: string
-  submitted_by_id: string
-}
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  location_type: string;
+  gender: Gender;
+  description: string | null;
+  upvote_count: number;
+  downvote_count: number;
+  status: Status;
+  submitted_at: string;
+  submitted_by_id: string;
+};
 export interface AppContextType {
   supabase: SupabaseClient;
   session: Session | null;
@@ -156,7 +156,9 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ supabase, session, setSession, toilets, setToilets, loading, setLoading, currentLocation, setCurrentLocation, mapCenter, setMapCenter, authModalOpen, setAuthModalOpen }}>
+    <AppContext.Provider
+      value={{ supabase, session, setSession, toilets, setToilets, loading, setLoading, currentLocation, setCurrentLocation, mapCenter, setMapCenter, authModalOpen, setAuthModalOpen }}
+    >
       {children}
     </AppContext.Provider>
   );

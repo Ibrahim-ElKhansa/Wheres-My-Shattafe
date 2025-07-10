@@ -21,8 +21,6 @@ export default function Home() {
   const [centerCoordinates, setCenterCoordinates] = useState<Coordinates>(currentLocation.duplicate());
 
   const handleAddLocation = (coords: Coordinates) => {
-    console.log("🏷️ New submit coords:", coords);
-    // send coords to your form or API…
     setCenterCoordinates(coords);
     setMapMode("information");
   };

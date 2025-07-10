@@ -6,13 +6,12 @@ $dark: #393E46;
 $black: #1B262C;
 $white: #F7FBFC;
 
-
 @import '@/styles/home-page.scss';
 @import '@/styles/navigation-menu.scss';
 @import '@/styles/about-page.scss';
-@import '@/styles/contribute-page.scss';
 @import '@/styles/auth-modal.scss';
 @import '@/styles/bidet-modal.scss';
+@import '@/styles/support-page.scss';
 
 html,
 body {
@@ -60,7 +59,7 @@ body {
       color: #fff;
       height: 80px;
       padding: 10px 5px;
-      
+
     }
 
     &__title {

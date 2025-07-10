@@ -3,9 +3,9 @@
 import Link from "next/link";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import PersonIcon from "@mui/icons-material/Person";
 import AuthModal from "./auth-modal";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useAppContext } from "@/contexts/app-context";
 export default function NavigationMenu() {
   const { session, authModalOpen, setAuthModalOpen } = useAppContext();
@@ -16,8 +16,8 @@ export default function NavigationMenu() {
         <Link href="/" className="navigation-menu__item">
           <HomeIcon /> Home
         </Link>
-        <Link href="/contribute" className="navigation-menu__item">
-          <AddCircleIcon /> Contribute
+        <Link href="/support" className="navigation-menu__item">
+          <FavoriteIcon /> Support
         </Link>
         <Link href="/about" className="navigation-menu__item">
           <InfoIcon /> About

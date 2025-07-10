@@ -19,11 +19,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
       try {
         // Check if user exists in the database
-        const { data: existingUser, error: fetchError } = await supabase
-          .from("users")
-          .select("id")
-          .eq("id", session.user.id)
-          .single();
+        const { data: existingUser, error: fetchError } = await supabase.from("users").select("id").eq("id", session.user.id).single();
 
         if (fetchError && fetchError.code !== "PGRST116") {
           // PGRST116 is "not found" error, other errors should be logged
@@ -36,7 +32,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
           const { error: insertError } = await supabase.from("users").insert({
             id: session.user.id,
             email: session.user.email || "",
-            role: "user"
+            role: "user",
           });
 
           if (insertError) {
@@ -65,35 +61,21 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
       aria-modal="true"
     >
       <div className="auth-modal__content">
-        <div className="auth-modal__title">
-          {session ? "Profile" : "Sign In"}
-        </div>
-        <button
-          className="auth-modal__close-btn"
-          onClick={onClose}
-          aria-label="Close auth modal"
-        >
+        <div className="auth-modal__title">{session ? "Profile" : "Sign In"}</div>
+        <button className="auth-modal__close-btn" onClick={onClose} aria-label="Close auth modal">
           <CloseIcon />
         </button>
 
         {session ? (
           <div className="auth-modal__session">
             <p>Signed in as {session.user.email}</p>
-            <button
-              className="auth-modal__button auth-modal__button--sign-out"
-              onClick={() => supabase.auth.signOut()}
-            >
+            <button className="auth-modal__button auth-modal__button--sign-out" onClick={() => supabase.auth.signOut()}>
               Sign Out
             </button>
           </div>
         ) : (
           <div className="auth-modal__button-group">
-            <button
-              className="auth-modal__button auth-modal__button--google"
-              onClick={() =>
-                supabase.auth.signInWithOAuth({ provider: "google" })
-              }
-            >
+            <button className="auth-modal__button auth-modal__button--google" onClick={() => supabase.auth.signInWithOAuth({ provider: "google" })}>
               Continue with Google
             </button>
           </div>
