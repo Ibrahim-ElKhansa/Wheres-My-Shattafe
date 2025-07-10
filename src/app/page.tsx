@@ -6,7 +6,7 @@ import CenterFocusStrongIcon from "@mui/icons-material/CenterFocusStrong";
 import ScreenSearchDesktopIcon from "@mui/icons-material/ScreenSearchDesktop";
 import findClosestToilet from "@/utils/findClosestToilet";
 import AddIcon from "@mui/icons-material/Add";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Coordinates from "@/models/coordinates";
 import { MapMode } from "@/components/shattafe-map";
@@ -16,10 +16,9 @@ import BidetModal from "@/components/bidet-modal";
 
 const ShattafeMap = dynamic(() => import("@/components/shattafe-map"), { ssr: false });
 
-export default function Home() {
-  const { toilets, currentLocation, setMapCenter, setMapZoom, session, setAuthModalOpen } = useAppContext();
-  const [mapMode, setMapMode] = useState<MapMode>("general" as MapMode);
-  const [centerCoordinates, setCenterCoordinates] = useState<Coordinates>(currentLocation.duplicate());
+// Component that handles search params - needs to be wrapped in Suspense
+function AuthHandler() {
+  const { setAuthModalOpen } = useAppContext();
   const searchParams = useSearchParams();
 
   // Handle authentication feedback from URL parameters
@@ -44,6 +43,14 @@ export default function Home() {
       window.history.replaceState({}, '', url.toString());
     }
   }, [searchParams, setAuthModalOpen]);
+
+  return null; // This component doesn't render anything
+}
+
+function HomeContent() {
+  const { toilets, currentLocation, setMapCenter, setMapZoom, session, setAuthModalOpen } = useAppContext();
+  const [mapMode, setMapMode] = useState<MapMode>("general" as MapMode);
+  const [centerCoordinates, setCenterCoordinates] = useState<Coordinates>(currentLocation.duplicate());
 
   const handleAddLocation = useCallback((coords: Coordinates) => {
     setCenterCoordinates(coords);
@@ -118,5 +125,16 @@ export default function Home() {
         <BidetModal isOpen={mapMode === "information"} coordinates={centerCoordinates} onClose={() => setMapMode("general" as MapMode)} />
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <>
+      <Suspense fallback={null}>
+        <AuthHandler />
+      </Suspense>
+      <HomeContent />
+    </>
   );
 }
