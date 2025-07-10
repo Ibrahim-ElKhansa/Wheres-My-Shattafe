@@ -2,6 +2,12 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
+  // Validate required environment variables
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    console.error('Missing required Supabase environment variables');
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -27,19 +33,35 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: DO NOT REMOVE auth.getUser()
 
-  // const {
-  //   data: { user },
-  // } = await supabase.auth.getUser()
-  await supabase.auth.getUser();
-  // if (
-  //   !user &&
-  //   !request.nextUrl.pathname.startsWith('/login') &&
-  //   !request.nextUrl.pathname.startsWith('/auth')
-  // ) {
-  //   // no user, potentially respond by redirecting the user to the login page
-  //   const url = request.nextUrl.clone()
-  //   url.pathname = '/login'
-  //   return NextResponse.redirect(url)
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // Optional: Add logging for debugging auth issues in development
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Middleware - User:', user ? `${user.email} (${user.id})` : 'No user');
+    console.log('Middleware - Path:', request.nextUrl.pathname);
+  }
+
+  // Handle OAuth callback success - redirect to home with success flag
+  if (user && request.nextUrl.pathname === '/auth/callback') {
+    const url = request.nextUrl.clone();
+    url.pathname = '/';
+    url.searchParams.set('auth', 'success');
+    return NextResponse.redirect(url);
+  }
+
+  // TODO: Add protected route handling when needed
+  // Example for future use:
+  // const protectedRoutes = ['/admin', '/profile', '/dashboard'];
+  // const isProtectedRoute = protectedRoutes.some(route => 
+  //   request.nextUrl.pathname.startsWith(route)
+  // );
+  // if (!user && isProtectedRoute) {
+  //   const url = request.nextUrl.clone();
+  //   url.pathname = '/';
+  //   url.searchParams.set('auth', 'required');
+  //   return NextResponse.redirect(url);
   // }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.

@@ -33,7 +33,7 @@ export default function BidetModal({ isOpen, coordinates, onClose }: BidetModalP
         locationType,
         gender: gender as Gender,
         description,
-        submittedById: session?.user.id ?? "", // Retrieve the user's ID
+        submittedById: session?.user.id ?? "",
       });
       setLocationName("");
       setLocationType("restaurant");
@@ -42,7 +42,6 @@ export default function BidetModal({ isOpen, coordinates, onClose }: BidetModalP
       onClose();
     } catch (error) {
       console.error("Error adding toilet:", error);
-      // Handle error (e.g., show a notification)
     }
   };
 

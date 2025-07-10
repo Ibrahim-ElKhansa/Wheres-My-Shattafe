@@ -1,4 +1,3 @@
-// app/actions/toilets.ts
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
@@ -14,7 +13,7 @@ export type NewToilet = {
   submittedById: string;
 };
 
-export async function addToilet(data: NewToilet) { //todo add security checks
+export async function addToilet(data: NewToilet) {
   const supabase = await createClient();
 
   const { error } = await supabase
@@ -23,12 +22,12 @@ export async function addToilet(data: NewToilet) { //todo add security checks
       name: data.name,
       lat: data.lat,
       lng: data.lng,
-      location_type: data.locationType,     // snake_case → your DB column
-      gender: data.gender,                  // enum type
+      location_type: data.locationType,
+      gender: data.gender,
       description: data.description || null,
       upvote_count: 0,
       downvote_count: 0,
-      status: "pending",                    // your enum type “toilet_status”
+      status: "pending",
       submitted_at: new Date().toISOString(),
       submitted_by_id: data.submittedById,
     });

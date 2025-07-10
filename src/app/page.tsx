@@ -6,7 +6,8 @@ import CenterFocusStrongIcon from "@mui/icons-material/CenterFocusStrong";
 import ScreenSearchDesktopIcon from "@mui/icons-material/ScreenSearchDesktop";
 import findClosestToilet from "@/utils/findClosestToilet";
 import AddIcon from "@mui/icons-material/Add";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Coordinates from "@/models/coordinates";
 import { MapMode } from "@/components/shattafe-map";
 import CheckIcon from "@mui/icons-material/Check";
@@ -16,14 +17,38 @@ import BidetModal from "@/components/bidet-modal";
 const ShattafeMap = dynamic(() => import("@/components/shattafe-map"), { ssr: false });
 
 export default function Home() {
-  const { toilets, currentLocation, setMapCenter, session, setAuthModalOpen } = useAppContext();
+  const { toilets, currentLocation, setMapCenter, setMapZoom, session, setAuthModalOpen } = useAppContext();
   const [mapMode, setMapMode] = useState<MapMode>("general" as MapMode);
   const [centerCoordinates, setCenterCoordinates] = useState<Coordinates>(currentLocation.duplicate());
+  const searchParams = useSearchParams();
 
-  const handleAddLocation = (coords: Coordinates) => {
+  // Handle authentication feedback from URL parameters
+  useEffect(() => {
+    const authParam = searchParams.get('auth');
+    
+    if (authParam === 'required') {
+      // Open auth modal when authentication is required
+      setAuthModalOpen(true);
+    } else if (authParam === 'success') {
+      // Could show a success toast here if you want
+      console.log('Authentication successful!');
+    } else if (authParam === 'error') {
+      // Could show an error toast here if you want
+      console.error('Authentication failed');
+    }
+
+    // Clean up URL parameters after handling them
+    if (authParam && window.history.replaceState) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('auth');
+      window.history.replaceState({}, '', url.toString());
+    }
+  }, [searchParams, setAuthModalOpen]);
+
+  const handleAddLocation = useCallback((coords: Coordinates) => {
     setCenterCoordinates(coords);
     setMapMode("information");
-  };
+  }, []);
 
   return (
     <div className="home-page">
@@ -37,6 +62,7 @@ export default function Home() {
                   const closest = findClosestToilet(currentLocation, toilets);
                   if (closest) {
                     setMapCenter(closest.toilet.getCoordinates());
+                    setMapZoom(18);
                   }
                 }}
               >
@@ -45,6 +71,7 @@ export default function Home() {
               <button
                 onClick={() => {
                   setMapCenter(currentLocation.duplicate());
+                  setMapZoom(16);
                 }}
               >
                 <CenterFocusStrongIcon /> Recenter

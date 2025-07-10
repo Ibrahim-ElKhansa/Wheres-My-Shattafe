@@ -43,29 +43,27 @@ interface ShattafeMapProps {
 }
 
 export default function ShattafeMap({ mapMode, onAddLocation }: ShattafeMapProps) {
-  const { toilets, loading, currentLocation, mapCenter, setMapCenter } = useAppContext();
+  const { toilets, loading, currentLocation, mapCenter, setMapCenter, mapZoom } = useAppContext();
   const mapRef = useRef<L.Map | null>(null);
 
-  // initialize center to current location
   useEffect(() => {
     if (!currentLocation.isEmpty()) {
       setMapCenter(currentLocation);
     }
-  }, [currentLocation]);
+  }, [currentLocation, setMapCenter]);
 
-  // report center when entering information mode
   useEffect(() => {
     if (mapMode === "information" && mapRef.current) {
       const c = mapRef.current.getCenter();
       onAddLocation(new Coordinates(c.lat, c.lng));
     }
-  }, [mapMode]);
+  }, [mapMode, onAddLocation]);
 
   useEffect(() => {
     if (mapRef.current) {
-      mapRef.current.setView([mapCenter.lat, mapCenter.lng], mapRef.current.getZoom(), { animate: true });
+      mapRef.current.setView([mapCenter.lat, mapCenter.lng], mapZoom, { animate: true });
     }
-  }, [mapCenter]);
+  }, [mapCenter, mapZoom]);
 
   if (loading) {
     return <p>Loading map data…</p>;
@@ -78,7 +76,7 @@ export default function ShattafeMap({ mapMode, onAddLocation }: ShattafeMapProps
           mapRef.current = inst as unknown as L.Map;
         }}
         center={mapCenter}
-        zoom={14}
+        zoom={mapZoom}
         style={{ height: "100%", width: "100%" }}
       >
         <TileLayer

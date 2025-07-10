@@ -32,6 +32,8 @@ export interface AppContextType {
   setCurrentLocation: React.Dispatch<React.SetStateAction<Coordinates>>;
   mapCenter: Coordinates;
   setMapCenter: React.Dispatch<React.SetStateAction<Coordinates>>;
+  mapZoom: number;
+  setMapZoom: React.Dispatch<React.SetStateAction<number>>;
   authModalOpen: boolean;
   setAuthModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -48,6 +50,8 @@ const defaultContext: AppContextType = {
   setCurrentLocation: () => {},
   mapCenter: Coordinates.getBeirutCenter(),
   setMapCenter: () => {},
+  mapZoom: 14,
+  setMapZoom: () => {},
   authModalOpen: false,
   setAuthModalOpen: () => {},
 };
@@ -68,6 +72,7 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [currentLocation, setCurrentLocation] = useState<Coordinates>(Coordinates.getEmpty());
   const [mapCenter, setMapCenter] = useState<Coordinates>(defaultCenter);
+  const [mapZoom, setMapZoom] = useState<number>(14);
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
   useEffect(() => {
@@ -93,7 +98,7 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
       setLoading(true);
 
       // pull all toilet rows
-      const { data: rows, error } = await supabase.from("toilets").select(`
+      const { data: rows, error } = await supabase.from("toilets_client").select(`
           id,
           name,
           lat,
@@ -106,13 +111,12 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
           status,
           submitted_at,
           submitted_by_id
-        `); //todo any user can still see the toilets table which is wrong
+        `);
 
       if (error) {
         console.error("Error loading toilets:", error);
         setToilets([]);
       } else if (rows) {
-        // map snake_case → your ToiletDTO then into Toilet model
         const dtos: ToiletDTO[] = rows.map((r: ToiletRow) => ({
           id: r.id,
           name: r.name,
@@ -157,7 +161,7 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ supabase, session, setSession, toilets, setToilets, loading, setLoading, currentLocation, setCurrentLocation, mapCenter, setMapCenter, authModalOpen, setAuthModalOpen }}
+      value={{ supabase, session, setSession, toilets, setToilets, loading, setLoading, currentLocation, setCurrentLocation, mapCenter, setMapCenter, mapZoom, setMapZoom, authModalOpen, setAuthModalOpen }}
     >
       {children}
     </AppContext.Provider>

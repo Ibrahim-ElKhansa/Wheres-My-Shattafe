@@ -15,7 +15,6 @@ export interface ToiletDTO {
   upvoteCount?: number;
   downvoteCount?: number;
 
-  // Admin-only, so optional on the public endpoint:
   status?: Status;
   submittedAt?: string;
   submittedById?: string;
