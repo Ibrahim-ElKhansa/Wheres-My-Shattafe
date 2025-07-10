@@ -58,13 +58,7 @@ A community-driven, open-source platform dedicated to mapping public toilets wit
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Ibrahim-ElKhansa/Wheres-My-Shattafe.git
-   cd Wheres-My-Shattafe
-   ```
-
-2. **Install dependencies**
+1. **Install dependencies**
    ```bash
    npm install
    # or
@@ -73,7 +67,7 @@ A community-driven, open-source platform dedicated to mapping public toilets wit
    pnpm install
    ```
 
-3. **Set up environment variables**
+2. **Set up environment variables**
    
    Create a `.env.local` file in the root directory:
    ```env
@@ -81,13 +75,13 @@ A community-driven, open-source platform dedicated to mapping public toilets wit
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 
-4. **Configure Supabase**
+3. **Configure Supabase**
    - Set up Google OAuth in your Supabase project
    - Add your site URL to the OAuth redirect URLs
    - For development: `http://localhost:3000/auth/callback`
    - For production: `https://yourdomain.com/auth/callback`
 
-5. **Run the development server**
+4. **Run the development server**
    ```bash
    npm run dev
    # or
@@ -96,7 +90,7 @@ A community-driven, open-source platform dedicated to mapping public toilets wit
    pnpm dev
    ```
 
-6. **Open your browser**
+5. **Open your browser**
    
    Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
 
