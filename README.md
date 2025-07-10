@@ -2,13 +2,13 @@
 
 **Public hygiene, one tap away.**
 
-A community-driven, open-source platform dedicated to mapping public toilets with bidets worldwide. Because everyone deserves access to proper hygiene facilities!
+A community-driven, open-source platform dedicated to mapping public toilets with bidets. Because everyone deserves access to proper hygiene facilities!
 
 ![Where's My Shattafe Banner](./public/shattafe-marker.png)
 
 ## 🌟 About
 
-**Where's My Shattafe?** is a community-powered map that makes finding clean, comfortable restrooms with bidets easier for everyone. Our interactive platform allows users to discover and contribute bidet locations worldwide, building a comprehensive database for better public hygiene access.
+**Where's My Shattafe?** is a community-powered map that makes finding clean, comfortable restrooms with bidets easier for everyone. Our interactive platform allows users to discover and contribute bidet locations, building a comprehensive database for better public hygiene access.
 
 ## ✨ Features
 
