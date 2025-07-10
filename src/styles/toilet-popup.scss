@@ -1,0 +1,184 @@
+.toilet-popup {
+  min-width: 250px;
+  max-width: 320px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    gap: 8px;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  &__status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+
+    &--approved {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    &--pending {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__info-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #555;
+  }
+
+  &__icon {
+    width: 18px !important;
+    height: 18px !important;
+    color: #666;
+  }
+
+  &__location-type {
+    font-weight: 500;
+    color: #2c3e50;
+  }
+
+  &__gender-icon {
+    width: 18px !important;
+    height: 18px !important;
+
+    &--male {
+      color: #3498db;
+    }
+
+    &--female {
+      color: #e91e63;
+    }
+
+    &--both {
+      color: #9c27b0;
+    }
+
+    &--undefined {
+      color: #95a5a6;
+    }
+  }
+
+  &__gender-text {
+    font-weight: 500;
+  }
+
+  &__description {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    border-left: 3px solid #3498db;
+    margin: 4px 0;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #2c3e50;
+      font-style: italic;
+    }
+  }
+
+  &__votes {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 4px 0;
+  }
+
+  &__vote-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  &__vote-icon {
+    width: 16px !important;
+    height: 16px !important;
+
+    &--up {
+      color: #27ae60;
+    }
+
+    &--down {
+      color: #e74c3c;
+    }
+  }
+
+  &__total-votes {
+    margin-left: auto;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 2px 8px;
+    background-color: #ecf0f1;
+    border-radius: 12px;
+    color: #2c3e50;
+  }
+
+  &__submitted {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #7f8c8d;
+    padding-top: 4px;
+    border-top: 1px solid #ecf0f1;
+    margin-top: 4px;
+
+    .toilet-popup__icon {
+      width: 14px !important;
+      height: 14px !important;
+    }
+  }
+}
+
+// Override Leaflet popup styles to better accommodate our content
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #e1e8ed !important;
+}
+
+.leaflet-popup-content {
+  margin: 16px !important;
+  line-height: 1.4 !important;
+}
+
+.leaflet-popup-tip {
+  box-shadow: none !important;
+  border: 1px solid #e1e8ed !important;
+  border-top: none !important;
+  border-left: none !important;
+}

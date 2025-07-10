@@ -3,11 +3,13 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import shattafeMarker from "../../public/shattafe-marker.png";
 import pendingShattafeMarker from "../../public/pending-shattafe-marker.png";
 import userLocationMarker from "../../public/user-location-marker.png";
 import { useAppContext } from "@/contexts/app-context";
 import Coordinates from "@/models/coordinates";
+import ToiletPopup from "./toilet-popup";
 export type MapMode = "general" | "location" | "information";
 
 const shattafeIcon = L.icon({
@@ -88,7 +90,9 @@ export default function ShattafeMap({ mapMode, onAddLocation }: ShattafeMapProps
         {mapMode === "general" &&
           toilets.map((t) => (
             <Marker key={t.id} position={[t.lat, t.lng]} icon={t.status && t.status === "approved" ? shattafeIcon : pendingShattafeIcon}>
-              <Popup>{t.name}</Popup>
+              <Popup>
+                <ToiletPopup toilet={t} />
+              </Popup>
             </Marker>
           ))}
 
@@ -102,8 +106,8 @@ export default function ShattafeMap({ mapMode, onAddLocation }: ShattafeMapProps
 
       {/* Center crosshair for location mode */}
       {mapMode === "location" && (
-        <img
-          src={shattafeMarker.src}
+        <Image
+          src={shattafeMarker}
           alt="Center Crosshair"
           style={{
             position: "absolute",

@@ -48,53 +48,7 @@ A community-driven, open-source platform dedicated to mapping public toilets wit
 - **Material-UI Icons** - Consistent iconography
 - **Vercel Analytics** - Performance monitoring
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18+ 
-- npm, yarn, pnpm, or bun
-- Supabase account and project
-
-### Installation
-
-1. **Install dependencies**
-   ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   ```
-
-2. **Set up environment variables**
-   
-   Create a `.env.local` file in the root directory:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
-
-3. **Configure Supabase**
-   - Set up Google OAuth in your Supabase project
-   - Add your site URL to the OAuth redirect URLs
-   - For development: `http://localhost:3000/auth/callback`
-   - For production: `https://yourdomain.com/auth/callback`
-
-4. **Run the development server**
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   ```
-
-5. **Open your browser**
-   
-   Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
-
-## 📁 Project Structure
+##  Project Structure
 
 ```
 src/
